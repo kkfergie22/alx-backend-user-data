@@ -15,20 +15,18 @@ def session_login() -> str:
         return jsonify({"error": "email missing"}), 400
     if password is None or password == '':
         return jsonify({"error": "password missing"}), 400
-    user = User.search({'email': email})
+    users = User.search({'email': email})
     if user is None or user == []:
         return jsonify({"error": "no user found for this email"}), 404
-    if not user.is_valid_password(password):
-        return jsonify({"error": "wrong password"}), 401
-    else:
-        from api.v1.app import auth
-        session_id = auth.create_session(user.id)
-        user_json = user.to_json()
-        response = make_response(jsonify(user_json), 200)
-        cookie_name = os.getenv('SESSION_NAME')
-        response.set_cookie(cookie_name, session_id)
-
-        return response
+    for user in users:
+        if user.is_valid_password(password):
+            from api.v1.app import auth
+            session_id = auth.create_session(user.id)
+            response = jsonify(user.to_json())
+            cookie_name = os.getenv('SESSION_NAME')
+            response.set_cookie(cookie_name, session_id)
+            return response
+    return jsonify({"error": "wrong password"}), 401
 
 
 @app_views.route('/auth_session/logout', methods=['DELETE'],
