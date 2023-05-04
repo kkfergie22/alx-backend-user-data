@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 """Session authentication module"""
 import os
-from flask import jsonify, request, make_response, abort
+from flask import jsonify, request, abort
 from api.v1.views import app_views
 from models.user import User
 
 
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
 def session_login() -> str:
-    """ POST /api/v1/auth_session/login"""
+    """
+    POST /api/v1/auth_session/login
+    Return:
+      - User instance JSON represented
+    """
     email = request.form.get('email')
     password = request.form.get('password')
     if email is None or email == '':
