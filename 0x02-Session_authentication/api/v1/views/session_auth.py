@@ -8,6 +8,7 @@ from models.user import User
 
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
 def login() -> str:
+    """ POST /api/v1/auth_session/login"""
     email = request.form.get('email')
     password = request.form.get('password')
     if email is None or email == '':
