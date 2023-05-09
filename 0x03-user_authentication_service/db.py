@@ -6,8 +6,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-
-from user import Base
+from sqlalchemy.orm.exc import NoResultFound, InvalidRequestError
+from user import Base, User
 
 
 class DB:
@@ -30,9 +30,17 @@ class DB:
 
     def add_user(self, email: str, hashed_password: str) -> None:
         """Add a user to the database"""
-        from user import User
 
         new_user = User(email=email, hashed_password=hashed_password)
         self._session.add(new_user)
         self._session.commit()
-        return None
+        return new_user
+
+    def find_user_by(self, **kwargs) -> User:
+        """Find a user by a specific attribute"""
+        if not kwargs:
+            raise InvalidRequestError
+        result = self._session.query(User).filter_by(**kwargs).first()
+        if result is None:
+            raise NoResultFound
+        return result
