@@ -53,8 +53,8 @@ class DB:
             result = self.find_user_by(id=user_id)
             for attr, value in kwargs.items():
                 if not hasattr(result, attr):
-                    raise ValueError("Invalid attribute")
+                    raise ValueError(f"Invalid attribute{attr}")
                 setattr(result, attr, value)
             self._session.commit()
         except NoResultFound:
-            raise ValueError("No user found with id:")
+            raise ValueError(f"No user found with id: {user_id}")
