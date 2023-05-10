@@ -51,6 +51,8 @@ class DB:
             raise ValueError("No attributes to update were provided")
         try:
             result = self.find_user_by(id=user_id)
+            if result is None:
+                return
             for attr, value in kwargs.items():
                 if not hasattr(result, attr):
                     raise ValueError(f"Invalid attribute{attr}")
