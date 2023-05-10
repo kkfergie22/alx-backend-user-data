@@ -50,13 +50,13 @@ class DB:
         if not kwargs:
             raise ValueError("No attributes to update were provided")
         try:
-            result = self.find_user_by(id=user_id)
-            if result is None:
+            user = self.find_user_by(id=user_id)
+            if user is None:
                 return
             for attr, value in kwargs.items():
-                if not hasattr(result, attr):
+                if not hasattr(User, attr):
                     raise ValueError(f"Invalid attribute{attr}")
-                setattr(result, attr, value)
+                setattr(user, attr, value)
             self._session.commit()
         except NoResultFound:
             raise ValueError(f"No user found with id: {user_id}")
