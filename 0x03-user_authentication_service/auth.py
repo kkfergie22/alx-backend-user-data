@@ -39,7 +39,7 @@ class Auth:
         user = None
         try:
             user = self._db.find_user_by(email=email)
-            hashed_password = user.hash_password.encode('utf-8')
+            hashed_password = user._hash_password.encode('utf-8')
             entered_password = password.encode('utf-8')
             if user is not None:
                 return bcrypt.checkpw(entered_password, hashed_password)
