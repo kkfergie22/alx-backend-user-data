@@ -38,10 +38,13 @@ class Auth:
         """ Check if the login is valid """
         try:
             user = self._db.find_user_by(email=email)
-            return bcrypt.checkpw(password.encode('utf-8'),
-                                  user.hashed_password.encode('utf-8'))
+            hashed_password = user.hashed_password.encode('utf-8')
+            entered_password = password.encode('utf-8')
+            if user is not None:
+                return bcrypt.checkpw(entered_password, hashed_password)
         except NoResultFound:
             return False
+        return False
 
     def create_session(self, email: str) -> str:
         """ Create a session ID """
