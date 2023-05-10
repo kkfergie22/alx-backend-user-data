@@ -32,12 +32,17 @@ def login() -> str:
     """ Login a user """
 
     email, password = request.form.get("email"), request.form.get("password")
+    if not email or not password:
+        abort(401)
     if not AUTH.valid_login(email, password):
         abort(401)
     session_id = AUTH.create_session(email)
+    if not session_id:
+        abort(401)
+
     response = jsonify({"email": email, "message": "logged in"})
     response.set_cookie("session_id", session_id)
-    return response
+    return response, 200
 
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
