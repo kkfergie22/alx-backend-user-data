@@ -39,7 +39,7 @@ class Auth:
         user = None
         try:
             user = self._db.find_user_by(email=email)
-            hashed_password = user.hashed_password.encode('utf-8')
+            hashed_password = user.hash_password.encode('utf-8')
             entered_password = password.encode('utf-8')
             if user is not None:
                 return bcrypt.checkpw(entered_password, hashed_password)
@@ -51,7 +51,9 @@ class Auth:
         """ Create a session ID """
         try:
             user = self._db.find_user_by(email=email)
-            session_id = self._generate_uuid()
+            if user is None:
+                return None
+            session_id = _generate_uuid()
             self._db.update_user(user.id, session_id=session_id)
             return session_id
         except NoResultFound:
