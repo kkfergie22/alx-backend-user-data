@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ Flask app with user authentication"""
-from flask import Flask, jsonify, abort, request
+from flask import Flask, jsonify, abort, request, redirect
 from auth import Auth
 
 
@@ -50,7 +50,7 @@ def logout() -> str:
     user = AUTH.get_user_from_session_id(session_id)
     if user:
         AUTH.destroy_session(user.id)
-        return jsonify({"message": "logout successful"})
+        return redirect("/")
     else:
         abort(403)
 
