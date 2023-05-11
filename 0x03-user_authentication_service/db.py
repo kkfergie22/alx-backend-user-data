@@ -60,4 +60,4 @@ class DB:
             self._session.commit()
         except NoResultFound:
             raise ValueError(f"No user found with id: {user_id}")
-        return None
+        # return None
