@@ -45,7 +45,7 @@ class DB:
             raise NoResultFound
         return result
 
-    def update_user(self, user_id: int, **kwargs) -> None:
+    def update_user(self, user_id, **kwargs) -> None:
         """Update a user"""
         if not kwargs:
             raise ValueError("No attributes to update were provided")
@@ -60,4 +60,4 @@ class DB:
             self._session.commit()
         except NoResultFound:
             raise ValueError(f"No user found with id: {user_id}")
-        # return None
+        return None
