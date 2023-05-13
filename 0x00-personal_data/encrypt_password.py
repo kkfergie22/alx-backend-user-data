@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+"""Module for obfuscating personal data fields and encrypting passwords"""
+
 import bcrypt
 
 
