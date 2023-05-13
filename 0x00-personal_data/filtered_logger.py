@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Regex-ing and obfuscating personal data fields"""
 
 import logging
 import re
@@ -7,7 +8,7 @@ import sys
 import mysql.connector
 from typing import List
 
-"""Regex-ing"""
+
 
 
 def filter_datum(fields: List[str], redaction: str, message: str,
