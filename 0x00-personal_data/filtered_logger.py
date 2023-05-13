@@ -35,10 +35,17 @@ class RedactingFormatter(logging.Formatter):
     SEPARATOR = ";"
 
     def __init__(self, fields: List[str] = None):
+        """Constructor method"""
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
     def format(self, record: logging.LogRecord) -> str:
+        """Filters values in incoming log records using filter_datum.
+        Args:
+            record (logging.LogRecord): record to filter
+        Returns:
+                str: filtered log message
+        """
         message = super().format(record)
         return filter_datum(self.fields, self.REDACTION, message,
                             self.SEPARATOR)
@@ -48,7 +55,10 @@ PII_FIELDS = ("name", "email", "phone", "ssn", "ip")
 
 
 def get_logger() -> logging.Logger:
-    """Returns a logger object."""
+    """Returns a logger object.
+    Returns:
+        logging.Logger: a logging.Logger object.
+    """
     logger = logging.getLogger('user_data')
     logger.setLevel(logging.INFO)
 
@@ -63,7 +73,8 @@ def get_logger() -> logging.Logger:
 
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
-    """Returns a connector to the secure holberton database."""
+    """Connects to the database.
+    Returns: connector to the holberton database."""
     username = os.environ.get('PERSONAL_DATA_DB_USERNAME', 'root')
     password = os.environ.get('PERSONAL_DATA_DB_PASSWORD', '')
     host = os.environ.get('PERSONAL_DATA_DB_HOST', 'localhost')
@@ -75,6 +86,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
 
 
 def main():
+    """Obtains a database connection using get_db and retrieves all rows"""
     logger = logging.getLogger('user_data')
     logger.setLevel(logging.INFO)
     logger.propagate = False
