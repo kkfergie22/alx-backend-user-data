@@ -63,7 +63,7 @@ def get_logger() -> logging.Logger:
     logger.setLevel(logging.INFO)
 
     formatter = RedactingFormatter(PII_FIELDS)
-    handler = logging.StreamHandler(sys.stdout)
+    handler = logging.StreamHandler()
     handler.setFormatter(formatter)
 
     logger.addHandler(handler)
